@@ -20,7 +20,7 @@ public class Mote1 extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // TODO Auto-generated method stub
 
-        Toast.makeText(context, "Call 2 worked.", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Phone Mode Changed To Normal.", Toast.LENGTH_LONG).show();
 
         myAudioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 

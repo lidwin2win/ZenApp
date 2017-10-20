@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.widget.Toast;
+
 public class Mote extends BroadcastReceiver{
 
     AudioManager myAudioManager;
@@ -14,7 +16,7 @@ public class Mote extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
         // TODO Auto-generated method stub
 
-        //Toast.makeText(context, "Alarm worked.", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Phone Mode Changed To Silent.", Toast.LENGTH_LONG).show();
 
         myAudioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
 

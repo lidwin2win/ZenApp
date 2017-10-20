@@ -180,11 +180,6 @@ public class timeActivity extends Activity {
 
                 //dbManager.insert(t1, t2);
 
-                dbManager.update(1, t1, t2);
-
-                Toast.makeText(getApplicationContext(), "Saved Success", Toast.LENGTH_SHORT).show();
-
-
                 String a[] = t1.split(":");
                 String hours = a[0];
                 String minutes = a[1];
@@ -192,41 +187,6 @@ public class timeActivity extends Activity {
                 int hr = Integer.parseInt(hours);
 
                 int min = Integer.parseInt(minutes);
-
-/*
-                String t3 = call3.getText().toString();
-                String t4 = call4.getText().toString();
-
-
-                String a_chk[] = t3.split(":");
-                String hours_check = a_chk[0];
-                String minutes_check = a_chk[1];
-
-                int hr_chk = Integer.parseInt(hours_check);
-
-                int min_chk = Integer.parseInt(minutes_check);
-
-*/
-
-
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.MONTH,cal.get(Calendar.MONTH));
-                cal.set(Calendar.YEAR,cal.get(Calendar.YEAR));
-                cal.set(Calendar.DAY_OF_MONTH , cal.get(Calendar.DAY_OF_MONTH));
-
-                cal.set(Calendar.HOUR_OF_DAY, hr);
-                cal.set(Calendar.MINUTE,min);
-
-                Intent intent = new Intent(timeActivity.this.getApplicationContext(), Mote.class);
-
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(timeActivity.this.getApplicationContext(), 1256, intent, PendingIntent.FLAG_ONE_SHOT | Intent.FILL_IN_DATA);
-
-
-
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-                alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
 
 
                 String b[] = t2.split(":");
@@ -237,62 +197,87 @@ public class timeActivity extends Activity {
 
                 int min1 = Integer.parseInt(minutes1);
 
+                if (hr > hr1) {
 
-/*
-                String b_chk[] = t4.split(":");
-                String hours1_chk = b_chk[0];
-                String minutes1_chk = b_chk[1];
+                    //Error
 
-                int hr1_chk = Integer.parseInt(hours1_chk);
+                    Toast.makeText(getApplicationContext(),"Time Conflict hr Occurred",Toast.LENGTH_LONG).show();
 
-                int min1_chk = Integer.parseInt(minutes1_chk);
-
-
-                if(hr_chk >= hr && hr_chk <= hr1 );
-
-*/
-
-                Calendar cal1 = Calendar.getInstance();
-
-                cal.set(Calendar.MONTH,cal.get(Calendar.MONTH));
-                cal.set(Calendar.YEAR,cal.get(Calendar.YEAR));
-                cal.set(Calendar.DAY_OF_MONTH , cal.get(Calendar.DAY_OF_MONTH));
-
-                cal1.set(Calendar.HOUR_OF_DAY, hr1);
-                cal1.set(Calendar.MINUTE, min1);
-
-                Intent intent1 = new Intent(timeActivity.this, Mote1.class);
-                PendingIntent pendingIntent1 = PendingIntent.getBroadcast(timeActivity.this.getApplicationContext(), 1258, intent1, PendingIntent.FLAG_ONE_SHOT| Intent.FILL_IN_DATA);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, cal1.getTimeInMillis(), pendingIntent1);
-
-
-
-                try {
-
-                    Cursor cursor = dbManager.fetch();
-
-                    cursor.moveToFirst();
-
-                    String a1 = cursor.getString(1);
-
-                    String a2 = cursor.getString(2);
-
-                    call1.setText(a1);
-                    call2.setText(a2);
-
-                    Toast.makeText(getApplicationContext(), a1 +'&'+a2 , Toast.LENGTH_LONG).show();
-
-
-                } catch (SQLiteException e) {
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                 }
 
-                catch (CursorIndexOutOfBoundsException e){
+                else if (hr == hr1 && min >= min1) {
 
-                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+                    //Error
+                    Toast.makeText(getApplicationContext(),"Time Conflict min Occurred",Toast.LENGTH_LONG).show();
+
+
+                } else {
+
+
+                    dbManager.update(1, t1, t2);
+
+                    Toast.makeText(getApplicationContext(), "Saved Success", Toast.LENGTH_SHORT).show();
+
+
+
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.MONTH, cal.get(Calendar.MONTH));
+                    cal.set(Calendar.YEAR, cal.get(Calendar.YEAR));
+                    cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+
+                    cal.set(Calendar.HOUR_OF_DAY, hr);
+                    cal.set(Calendar.MINUTE, min);
+
+                    Intent intent = new Intent(timeActivity.this.getApplicationContext(), Mote.class);
+
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(timeActivity.this.getApplicationContext(), 1256, intent, PendingIntent.FLAG_ONE_SHOT | Intent.FILL_IN_DATA);
+
+
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+
+
+
+                    Calendar cal1 = Calendar.getInstance();
+
+                    cal.set(Calendar.MONTH, cal.get(Calendar.MONTH));
+                    cal.set(Calendar.YEAR, cal.get(Calendar.YEAR));
+                    cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+
+                    cal1.set(Calendar.HOUR_OF_DAY, hr1);
+                    cal1.set(Calendar.MINUTE, min1);
+
+                    Intent intent1 = new Intent(timeActivity.this, Mote1.class);
+                    PendingIntent pendingIntent1 = PendingIntent.getBroadcast(timeActivity.this.getApplicationContext(), 1258, intent1, PendingIntent.FLAG_ONE_SHOT | Intent.FILL_IN_DATA);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, cal1.getTimeInMillis(), pendingIntent1);
+
+
+                    try {
+
+                        Cursor cursor = dbManager.fetch();
+
+                        cursor.moveToFirst();
+
+                        String a1 = cursor.getString(1);
+
+                        String a2 = cursor.getString(2);
+
+                        call1.setText(a1);
+                        call2.setText(a2);
+
+                        Toast.makeText(getApplicationContext(), a1 + '&' + a2, Toast.LENGTH_LONG).show();
+
+
+                    } catch (SQLiteException e) {
+                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                    } catch (CursorIndexOutOfBoundsException e) {
+
+                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                    }
+
+
                 }
-
-
             }
         });
 
@@ -308,7 +293,7 @@ public class timeActivity extends Activity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        time3.setText("End-Time:");
+        time4.setText("End-Time:");
 
         call3 = new Button(this);
 
@@ -404,16 +389,6 @@ public class timeActivity extends Activity {
 
                 String t2 = call4.getText().toString();
 
-
-                //dbManager.insert(t1, t2);
-
-                dbManager.update(2, t1, t2);
-
-                Toast.makeText(getApplicationContext(), "Saved Success", Toast.LENGTH_SHORT).show();
-
-
-
-
                 String a[] = t1.split(":");
                 String hours = a[0];
                 String minutes = a[1];
@@ -421,24 +396,6 @@ public class timeActivity extends Activity {
                 int hr = Integer.parseInt(hours);
 
                 int min = Integer.parseInt(minutes);
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.MONTH,cal.get(Calendar.MONTH));
-                cal.set(Calendar.YEAR,cal.get(Calendar.YEAR));
-                cal.set(Calendar.DAY_OF_MONTH , cal.get(Calendar.DAY_OF_MONTH));
-
-                cal.set(Calendar.HOUR_OF_DAY, hr);
-                cal.set(Calendar.MINUTE,min);
-
-                Intent intent = new Intent(timeActivity.this.getApplicationContext(), Mote.class);
-
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(timeActivity.this.getApplicationContext(), 1260, intent, PendingIntent.FLAG_UPDATE_CURRENT | Intent.FILL_IN_DATA);
-
-
-
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-                alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-
 
 
                 String b[] = t2.split(":");
@@ -449,47 +406,88 @@ public class timeActivity extends Activity {
 
                 int min1 = Integer.parseInt(minutes1);
 
-                Calendar cal1 = Calendar.getInstance();
 
-                cal.set(Calendar.MONTH,cal.get(Calendar.MONTH));
-                cal.set(Calendar.YEAR,cal.get(Calendar.YEAR));
-                cal.set(Calendar.DAY_OF_MONTH , cal.get(Calendar.DAY_OF_MONTH));
+                if (hr > hr1) {
 
-                cal1.set(Calendar.HOUR_OF_DAY, hr1);
-                cal1.set(Calendar.MINUTE, min1);
+                    //Error
 
-                Intent intent1 = new Intent(timeActivity.this, Mote1.class);
-                PendingIntent pendingIntent1 = PendingIntent.getBroadcast(timeActivity.this.getApplicationContext(), 1263, intent1, PendingIntent.FLAG_UPDATE_CURRENT | Intent.FILL_IN_DATA);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, cal1.getTimeInMillis(), pendingIntent1);
+                    Toast.makeText(getApplicationContext(), "Time Conflict hr Occurred", Toast.LENGTH_LONG).show();
 
+                } else if (hr == hr1 && min >= min1) {
+
+                    //Error
+                    Toast.makeText(getApplicationContext(), "Time Conflict min Occurred", Toast.LENGTH_LONG).show();
 
 
-                try {
-
-                    Cursor cursor = dbManager.fetch();
-
-                    cursor.moveToPosition(1);
-
-                    String a1 = cursor.getString(1);
-
-                    String a2 = cursor.getString(2);
-
-                    call3.setText(a1);
-                    call4.setText(a2);
-
-                    Toast.makeText(getApplicationContext(), a1 +'&'+a2 , Toast.LENGTH_LONG).show();
-
-
-                } catch (SQLiteException e) {
-                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
                 }
 
-                catch (CursorIndexOutOfBoundsException e){
+                //dbManager.insert(t1, t2);
 
-                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_LONG).show();
+                else {
+
+
+                    dbManager.update(2, t1, t2);
+
+                    Toast.makeText(getApplicationContext(), "Saved Success", Toast.LENGTH_SHORT).show();
+
+
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.MONTH, cal.get(Calendar.MONTH));
+                    cal.set(Calendar.YEAR, cal.get(Calendar.YEAR));
+                    cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+
+                    cal.set(Calendar.HOUR_OF_DAY, hr);
+                    cal.set(Calendar.MINUTE, min);
+
+                    Intent intent = new Intent(timeActivity.this.getApplicationContext(), Mote.class);
+
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(timeActivity.this.getApplicationContext(), 1260, intent, PendingIntent.FLAG_UPDATE_CURRENT | Intent.FILL_IN_DATA);
+
+
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+
+
+                    Calendar cal1 = Calendar.getInstance();
+
+                    cal.set(Calendar.MONTH, cal.get(Calendar.MONTH));
+                    cal.set(Calendar.YEAR, cal.get(Calendar.YEAR));
+                    cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+
+                    cal1.set(Calendar.HOUR_OF_DAY, hr1);
+                    cal1.set(Calendar.MINUTE, min1);
+
+                    Intent intent1 = new Intent(timeActivity.this, Mote1.class);
+                    PendingIntent pendingIntent1 = PendingIntent.getBroadcast(timeActivity.this.getApplicationContext(), 1263, intent1, PendingIntent.FLAG_UPDATE_CURRENT | Intent.FILL_IN_DATA);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, cal1.getTimeInMillis(), pendingIntent1);
+
+
+                    try {
+
+                        Cursor cursor = dbManager.fetch();
+
+                        cursor.moveToPosition(1);
+
+                        String a1 = cursor.getString(1);
+
+                        String a2 = cursor.getString(2);
+
+                        call3.setText(a1);
+                        call4.setText(a2);
+
+                        Toast.makeText(getApplicationContext(), a1 + '&' + a2, Toast.LENGTH_LONG).show();
+
+
+                    } catch (SQLiteException e) {
+                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                    } catch (CursorIndexOutOfBoundsException e) {
+
+                        Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                    }
+
+
                 }
-
-
             }
         });
 
